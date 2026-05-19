@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { BrowserProvider, Contract, ethers } from 'ethers';
 import { SOFTWARE_LICENSE_ABI } from '@/lib/abi';
 import { cn } from '@/lib/utils';
+import { getBufferedEip1559Gas, isGasPriceError, gasPriceErrorHelp } from '@/lib/gas';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -108,7 +109,7 @@ const SoftwareCard = ({ software, onBuy, isBuying, onSelect }: { software: Softw
                     size="icon" 
                     className="text-yellow-400 hover:text-yellow-300 bg-black/10 hover:bg-yellow-400/10 backdrop-blur-sm rounded-full border border-yellow-400/20" 
                     onClick={(e) => { e.stopPropagation(); onBuy(software); }} 
-                    disabled={isBuying === software._id}
+                    disabled={isBuying}
                 >
                     <CircleDollarSign className="h-6 w-6" />
                 </Button>
@@ -266,11 +267,14 @@ export default function MarketplacePage() {
             buyerIp = ipData.ip;
         }
         
+        const gasOverrides = await getBufferedEip1559Gas(provider);
+
         if (finalSoftware.price > 0 && !isSelfPurchase) {
             toast({ title: "Processing Payment...", description: "Please confirm the transaction in MetaMask." });
             const tx = await signer.sendTransaction({
                 to: sellerChecksumAddress,
-                value: ethers.parseEther(finalSoftware.price.toString())
+                value: ethers.parseEther(finalSoftware.price.toString()),
+                ...gasOverrides,
             });
             await tx.wait();
         } else if(isSelfPurchase) {
@@ -309,7 +313,12 @@ export default function MarketplacePage() {
         
         const contract = new Contract(SOFTWARE_LICENSE_CONTRACT_ADDRESS, SOFTWARE_LICENSE_ABI, signer);
         
-        const mintTx = await contract.mintLicense(currentBuyerAddress, metadataUrl, buyerIp, { from: currentBuyerAddress });
+        const mintTx = await contract.mintLicense(
+            currentBuyerAddress,
+            metadataUrl,
+            buyerIp,
+            gasOverrides
+        );
         const mintReceipt = await mintTx.wait();
         
         if (!mintReceipt.logs || mintReceipt.logs.length === 0) {
@@ -348,10 +357,18 @@ export default function MarketplacePage() {
              toast({ title: "Recording Error", description: recordResult.message, variant: "destructive" });
         }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
          console.error("Purchase failed:", error);
-         const errorMessage = error.reason || error.message || "An unexpected error occurred.";
-         toast({ title: "Purchase Failed", description: errorMessage, variant: "destructive" });
+         const raw =
+           error && typeof error === "object" && "reason" in error
+             ? String((error as { reason?: string }).reason)
+             : error instanceof Error
+               ? error.message
+               : "An unexpected error occurred.";
+         const description = isGasPriceError(raw)
+           ? gasPriceErrorHelp()
+           : raw;
+         toast({ title: "Purchase Failed", description, variant: "destructive", duration: 12000 });
     } finally {
         setIsBuying(null);
         setSelectedSoftwareForPurchase(null);

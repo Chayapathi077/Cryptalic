@@ -194,7 +194,9 @@ export default function VerifyPhrasePage() {
             {Array.from({ length: 12 }).map((_, index) => (
               <div key={index} className="relative">
                 <Input
-                  ref={el => inputRefs.current[index] = el}
+                  ref={(el) => {
+                    inputRefs.current[index] = el;
+                  }}
                   type="text"
                   value={phrase[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}

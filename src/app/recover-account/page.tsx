@@ -1,9 +1,8 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -12,7 +11,7 @@ import { ArrowLeft, Zap } from "lucide-react";
 import { recoverAccount } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
-export default function RecoverAccountPage() {
+function RecoverAccountContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -179,5 +178,17 @@ export default function RecoverAccountPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function RecoverAccountPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-primary to-accent" />
+      }
+    >
+      <RecoverAccountContent />
+    </Suspense>
   );
 }

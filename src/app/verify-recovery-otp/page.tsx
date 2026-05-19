@@ -1,9 +1,8 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { verifyRecoveryOtp, sendRecoveryOtp } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
-export default function VerifyRecoveryOtpPage() {
+function VerifyRecoveryOtpContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -166,5 +165,17 @@ export default function VerifyRecoveryOtpPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function VerifyRecoveryOtpPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-primary to-accent" />
+      }
+    >
+      <VerifyRecoveryOtpContent />
+    </Suspense>
   );
 }

@@ -1,25 +1,24 @@
 
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Circle, Eye, EyeOff, ArrowLeft, Zap } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { resetPassword } from '@/lib/auth';
-import Link from 'next/link';
+import { Suspense, useState, useEffect, useMemo, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Circle, Eye, EyeOff, ArrowLeft, Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { resetPassword } from "@/lib/auth";
+import Link from "next/link";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
@@ -28,7 +27,7 @@ export default function ResetPasswordPage() {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const emailFromParams = searchParams.get('email');
+    const emailFromParams = searchParams.get("email");
     if (emailFromParams) {
       setEmail(decodeURIComponent(emailFromParams));
       passwordRef.current?.focus();
@@ -38,7 +37,7 @@ export default function ResetPasswordPage() {
         description: "Invalid link. Please start the recovery process again.",
         variant: "destructive"
       });
-      router.push('/forgot-password');
+      router.push("/forgot-password");
     }
   }, [searchParams, router, toast]);
 
@@ -79,7 +78,7 @@ export default function ResetPasswordPage() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, nextFieldRef?: React.RefObject<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
         e.preventDefault();
         if (nextFieldRef?.current) {
             nextFieldRef.current.focus();
@@ -90,8 +89,8 @@ export default function ResetPasswordPage() {
   };
 
   const Rule = ({ met, children }: { met: boolean; children: React.ReactNode }) => (
-    <div className={cn("flex items-center justify-start gap-2 transition-colors", met ? 'text-green-400' : 'text-gray-400')}>
-        <Circle className={cn("h-2.5 w-2.5 transition-colors", met ? 'fill-current' : '')} />
+    <div className={cn("flex items-center justify-start gap-2 transition-colors", met ? "text-green-400" : "text-gray-400")}>
+        <Circle className={cn("h-2.5 w-2.5 transition-colors", met ? "fill-current" : "")} />
         <span className="text-left">{children}</span>
     </div>
   );
@@ -198,5 +197,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-primary to-accent" />
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

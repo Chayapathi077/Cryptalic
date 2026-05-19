@@ -133,10 +133,17 @@ export default function BuyerDashboardPage() {
         }
 
       // Create the license file with identifiers only. NO KEY.
+      const encryptedFileUrl = urlResult.fileUrl;
+      const fileName =
+        urlResult.originalFileName ||
+        `${license.softwareTitle.replace(/\s+/g, "_")}_software.bin`;
+
       const licenseFileData = {
         licenseId: license._id,
         softwareId: license.softwareId,
-        encryptedFileUrl: urlResult.fileUrl,
+        encryptedFileUrl,
+        fileName,
+        softwareTitle: license.softwareTitle,
       };
 
       const blob = new Blob([JSON.stringify(licenseFileData, null, 2)], { type: 'application/json' });
@@ -151,7 +158,8 @@ export default function BuyerDashboardPage() {
 
       toast({
         title: "License File Downloaded",
-        description: "Load this file in the 'Run Software' page to access your application.",
+        description:
+          "Load this file on Run Software to decrypt and download your app (ZIP, code, or text).",
         duration: 9000,
       });
 

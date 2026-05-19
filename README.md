@@ -50,7 +50,7 @@ This is a full-stack web application that provides a secure, decentralized marke
 
 - **Framework**: Next.js (React)
 - **Styling**: Tailwind CSS with ShadCN UI components for a modern, responsive design.
-- **Database**: MongoDB
+- **Database**: [Turso](https://turso.tech) (libSQL / SQLite, serverless, no sleep on free tier)
 - **Blockchain**: Polygon (Amoy Testnet) for NFT minting.
 - **Smart Contract Language**: Solidity
 - **Blockchain Interaction**: Ethers.js
@@ -68,7 +68,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 - [Node.js](https://nodejs.org/) (v18 or later)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account or a local MongoDB instance.
+- A [Turso](https://turso.tech) database (free tier includes 9 GB storage, no inactivity pause).
 - A [Pinata](https://www.pinata.cloud/) account to manage IPFS uploads.
 - [MetaMask](https://metamask.io/) browser extension for blockchain interactions.
 
@@ -89,8 +89,9 @@ Follow these instructions to get a copy of the project up and running on your lo
     Create a `.env` file in the root of your project and add the following variables.
 
     ```env
-    # MongoDB Connection String
-    NEXT_PUBLIC_MONGODB_URI="your_mongodb_connection_string"
+    # Turso (libSQL) — from Turso dashboard → Database → Connect
+    TURSO_DATABASE_URL="libsql://your-database-name-your-org.turso.io"
+    TURSO_AUTH_TOKEN="your_turso_auth_token"
 
     # Pinata API Keys (for uploading files to IPFS)
     PINATA_API_KEY="your_pinata_api_key"
@@ -113,7 +114,12 @@ Follow these instructions to get a copy of the project up and running on your lo
     EMAIL_FROM="your_email@gmail.com"
     ```
 
-4.  **Run the development server:**
+4.  **Create your Turso database** (one-time):
+    - Sign up at [turso.tech](https://turso.tech) and create a database.
+    - Copy `TURSO_DATABASE_URL` and create an auth token for `TURSO_AUTH_TOKEN`.
+    - Tables are created automatically on first API use (`users`, `software`, `licenses`).
+
+5.  **Run the development server:**
     ```bash
     npm run dev
     ```

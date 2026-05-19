@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -15,6 +15,11 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import {
+  encryptFileInBrowser,
+  formatBytes,
+  uploadEncryptedToPinata,
+} from '@/lib/client-file-crypto';
 
 function generateSecureKey() {
     const array = new Uint8Array(32);
@@ -45,15 +50,9 @@ export default function UploadPage() {
     // Upload process state
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-    useEffect(() => {
-        return () => {
-            if (progressIntervalRef.current) {
-                clearInterval(progressIntervalRef.current);
-            }
-        };
-    }, []);
+    const [uploadStage, setUploadStage] = useState<
+      "idle" | "encrypting" | "uploading" | "saving"
+    >("idle");
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -63,19 +62,6 @@ export default function UploadPage() {
         }
     };
     
-    const startProgressSimulation = () => {
-        setUploadProgress(0);
-        progressIntervalRef.current = setInterval(() => {
-            setUploadProgress(prev => {
-                if (prev >= 90) {
-                    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-                    return 90;
-                }
-                return prev + 5;
-            });
-        }, 100);
-    };
-
     const handleSubmit = async () => {
         const username = sessionStorage.getItem('username');
         if (!file || !username || !title || !price || !version || !licenseType || !category || !licenseTerms || !decryptionKey) {
@@ -84,36 +70,56 @@ export default function UploadPage() {
         }
 
         setIsUploading(true);
-        startProgressSimulation();
+        setUploadProgress(0);
+        setUploadStage("encrypting");
 
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('price', price);
-            formData.append('version', version);
-            formData.append('category', category);
-            formData.append('licenseType', licenseType);
-            formData.append('licenseTerms', licenseTerms);
-            formData.append('seller', username);
-            formData.append('ipLock', String(ipLock));
-            formData.append('fingerprintLock', String(fingerprintLock));
-            formData.append('decryptionKey', decryptionKey);
-
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
+            toast({
+              title: "Encrypting locally…",
+              description: `Securing ${formatBytes(file.size)} on your device before upload.`,
             });
-            
-            if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-            const result = await response.json();
-            
-            if (response.ok && result.success) {
-                setUploadProgress(100);
+
+            const encryptedBlob = await encryptFileInBrowser(file, decryptionKey);
+            const encryptedName = `${file.name}.enc`;
+
+            setUploadStage("uploading");
+            setUploadProgress(0);
+
+            const { fileUrl } = await uploadEncryptedToPinata(
+              encryptedBlob,
+              encryptedName,
+              (percent) => setUploadProgress(percent)
+            );
+
+            setUploadStage("saving");
+            setUploadProgress(100);
+
+            const registerResponse = await fetch("/api/upload/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title,
+                description,
+                price,
+                fileUrl,
+                originalFileName: file.name,
+                seller: username,
+                version,
+                category,
+                licenseType,
+                licenseTerms,
+                ipLock,
+                fingerprintLock,
+                decryptionKey,
+              }),
+            });
+
+            const result = await registerResponse.json();
+
+            if (registerResponse.ok && result.success) {
                 toast({
                     title: "Upload Complete!",
-                    description: "Your software has been successfully encrypted and listed.",
+                    description: "Your software has been encrypted and listed on the marketplace.",
                 });
                 setTimeout(() => router.push('/dashboard'), 1000);
             } else {
@@ -125,17 +131,22 @@ export default function UploadPage() {
                 });
                 setIsUploading(false);
                 setUploadProgress(0);
+                setUploadStage("idle");
             }
         } catch (error) {
-             if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
              console.error("Upload failed:", error);
              toast({
                 title: "Upload Error",
-                description: "An unexpected error occurred during upload. Check the console for details.",
+                description:
+                  error instanceof Error
+                    ? error.message
+                    : "An unexpected error occurred during upload.",
                 variant: "destructive",
+                duration: 9000,
             });
             setIsUploading(false);
             setUploadProgress(0);
+            setUploadStage("idle");
         }
     };
 
@@ -236,7 +247,7 @@ export default function UploadPage() {
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <UploadCloud className="w-8 h-8 mb-2 text-gray-400" />
                                         <p className="mb-1 text-sm text-gray-300"><span className="font-semibold">Upload Software File</span></p>
-                                        <p className="text-xs text-gray-400">Any file type accepted</p>
+                                        <p className="text-xs text-gray-400">Encrypted in your browser, then uploaded</p>
                                     </div>
                                     <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} disabled={isUploading}/>
                                 </label>
@@ -244,7 +255,10 @@ export default function UploadPage() {
                                 <div className="relative flex items-center justify-between w-full p-3 border border-white/30 rounded-lg bg-white/10 flex-grow min-h-[160px]">
                                     <div className="flex items-center gap-3 overflow-hidden">
                                         <File className="w-6 h-6 text-white flex-shrink-0"/>
-                                        <span className="font-medium text-sm truncate" title={file.name}>{file.name}</span>
+                                        <span className="font-medium text-sm truncate" title={file.name}>
+                                          {file.name}
+                                          <span className="block text-xs text-gray-400">{formatBytes(file.size)}</span>
+                                        </span>
                                     </div>
                                     <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 h-7 w-7 flex-shrink-0" onClick={() => {setFile(null); setDecryptionKey("");}} disabled={isUploading}>
                                         <X className="h-4 w-4"/>
@@ -293,7 +307,12 @@ export default function UploadPage() {
                     {isUploading && (
                         <div className="space-y-1 text-center">
                             <Progress value={uploadProgress} className="h-2 bg-white/10 border border-white/20 backdrop-blur-sm" />
-                            <p className="text-xs text-gray-300">{uploadProgress === 100 ? "Complete!" : `Encrypting & Uploading... ${Math.round(uploadProgress)}%`}</p>
+                            <p className="text-xs text-gray-300">
+                              {uploadStage === "encrypting" && "Encrypting on your device…"}
+                              {uploadStage === "uploading" && `Uploading to IPFS… ${Math.round(uploadProgress)}%`}
+                              {uploadStage === "saving" && "Saving listing…"}
+                              {uploadProgress === 100 && uploadStage === "idle" && "Complete!"}
+                            </p>
                         </div>
                     )}
                  </div>

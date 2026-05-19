@@ -74,12 +74,21 @@
   }
 }
 
+@layer components {
+  .glass-panel {
+    @apply rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl;
+  }
+  .glass-input {
+    @apply rounded-2xl border border-white/30 bg-white/10 text-white placeholder:text-gray-300 backdrop-blur-md;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-body text-foreground;
   }
   
   /* Fix for browser autofill overriding styles */
@@ -92,4 +101,21 @@
     -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s;
   }
+}
+
+@keyframes presents-expand {
+  from {
+    letter-spacing: 0.12em;
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    letter-spacing: 0.55em;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-presents-expand {
+  animation: presents-expand 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
