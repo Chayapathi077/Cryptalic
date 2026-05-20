@@ -1,4 +1,4 @@
-import { Zap } from "lucide-react";
+import { Codesandbox } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type SsLogoProps = {
@@ -7,6 +7,8 @@ type SsLogoProps = {
 };
 
 export function SsLogo({ className, iconClassName }: SsLogoProps) {
+  const sizeClass = iconClassName ?? "h-7 w-7";
+  
   return (
     <div
       className={cn(
@@ -14,17 +16,8 @@ export function SsLogo({ className, iconClassName }: SsLogoProps) {
         className
       )}
     >
-      <Zap
-        className={cn(
-          "absolute text-white",
-          iconClassName ?? "h-7 w-7 -translate-x-[0.35rem]"
-        )}
-      />
-      <Zap
-        className={cn(
-          "absolute text-white",
-          iconClassName ?? "h-7 w-7 translate-x-[0.35rem]"
-        )}
+      <Codesandbox
+        className={cn("text-white stroke-[2.5]", sizeClass)}
       />
     </div>
   );

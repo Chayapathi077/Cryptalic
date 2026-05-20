@@ -1,6 +1,7 @@
 
 "use client";
 
+import { AppHeaderBrand } from "@/components/brand/AppHeaderBrand";
 import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -115,35 +116,7 @@ export default function ManageSoftwarePage({ params }: { params: { softwareId: s
     <>
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-primary to-accent text-white">
       <header className="sticky top-0 flex h-16 items-center justify-between border-b border-white/20 bg-white/10 px-4 md:px-6 z-40 backdrop-blur-sm">
-        <div className="flex items-center gap-2">
-            <div
-                className={cn(
-                "relative flex items-center justify-center h-10 w-10"
-                )}
-            >
-                <div
-                className={cn(
-                    "relative flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 shadow-lg transition-all duration-1000 ease-in-out rounded-lg",
-                    "h-10 w-10 p-2" 
-                )}
-                >
-                <div className="flex items-center justify-center w-full h-full">
-                    <Zap
-                    className={cn(
-                        "text-white transition-all duration-1000 ease-in-out absolute",
-                        "h-5 w-5 -translate-x-1" 
-                    )}
-                    />
-                    <Zap
-                    className={cn(
-                        "text-white transition-all duration-1000 ease-in-out absolute",
-                        "h-5 w-5 translate-x-1" 
-                    )}
-                    />
-                </div>
-                </div>
-            </div>
-        </div>
+        <AppHeaderBrand href="/dashboard" />
         <div className="flex items-center">
           <Button asChild variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
             <Link href="/dashboard">

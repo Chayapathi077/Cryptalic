@@ -1,45 +1,60 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { SquircleGlass } from "./SquircleGlass";
 import { FireLogo } from "./FireLogo";
 import { SsLogo } from "./SsLogo";
 
 type BrandMarkProps = {
   size?: "sm" | "md" | "lg";
-  fireOpacity?: number;
-  ssOpacity?: number;
+  phase?: "spirit" | "presents" | "crossfade" | "cryptalic" | "move" | "done";
   className?: string;
 };
 
 export function BrandMark({
   size = "md",
-  fireOpacity = 0,
-  ssOpacity = 1,
+  phase = "done",
   className,
 }: BrandMarkProps) {
+  // FireLogo is visible during spirit and presents
+  const isFireVisible = phase === "spirit" || phase === "presents";
+  
   return (
     <SquircleGlass size={size} className={className}>
       <div className="relative flex h-full w-full items-center justify-center">
-        <div
-          className="absolute inset-0 flex items-center justify-center transition-opacity duration-[1200ms] ease-in-out"
-          style={{ opacity: fireOpacity }}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          initial={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          animate={{
+            opacity: isFireVisible ? 1 : 0,
+            scale: isFireVisible ? 1 : 0.5,
+            filter: isFireVisible ? "blur(0px)" : "blur(10px)",
+          }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         >
           <FireLogo />
-        </div>
-        <div
-          className="absolute inset-0 flex items-center justify-center transition-opacity duration-[1200ms] ease-in-out"
-          style={{ opacity: ssOpacity }}
+        </motion.div>
+        
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          initial={{ opacity: 0, scale: 1.5, filter: "blur(10px)" }}
+          animate={{
+            opacity: !isFireVisible ? 1 : 0,
+            scale: !isFireVisible ? 1 : 1.5,
+            filter: !isFireVisible ? "blur(0px)" : "blur(10px)",
+          }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         >
           <SsLogo
             iconClassName={
               size === "sm"
-                ? "h-4 w-4 -translate-x-[0.15rem]"
+                ? "h-5 w-5"
                 : size === "lg"
-                  ? "h-10 w-10 -translate-x-2"
+                  ? "h-10 w-10"
                   : undefined
             }
           />
-        </div>
+        </motion.div>
       </div>
     </SquircleGlass>
   );

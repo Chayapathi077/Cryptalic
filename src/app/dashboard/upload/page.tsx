@@ -1,6 +1,7 @@
 
 "use client";
 
+import { AppHeaderBrand } from "@/components/brand/AppHeaderBrand";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -154,44 +155,16 @@ export default function UploadPage() {
 
     return (
         <main className="flex w-full flex-col items-center justify-center bg-gradient-to-br from-primary to-accent p-4 text-white min-h-screen">
-             <header className="absolute top-0 left-0 right-0 flex h-16 items-center justify-between px-4 md:px-6">
-                <div className="flex items-center gap-2">
-            <div
-                className={cn(
-                "relative flex items-center justify-center h-10 w-10"
-                )}
-            >
-                <div
-                className={cn(
-                    "relative flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 shadow-lg transition-all duration-1000 ease-in-out rounded-lg",
-                    "h-10 w-10 p-2" 
-                )}
-                >
-                <div className="flex items-center justify-center w-full h-full">
-                    <Zap
-                    className={cn(
-                        "text-white transition-all duration-1000 ease-in-out absolute",
-                        "h-5 w-5 -translate-x-1" 
-                    )}
-                    />
-                    <Zap
-                    className={cn(
-                        "text-white transition-all duration-1000 ease-in-out absolute",
-                        "h-5 w-5 translate-x-1" 
-                    )}
-                    />
-                </div>
-                </div>
-            </div>
-        </div>
-                <div className="flex items-center">
-                    <Button asChild variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
-                        <Link href="/dashboard">
-                            <ArrowLeft className="h-6 w-6" />
-                        </Link>
-                    </Button>
-                </div>
-            </header>
+             <div className="absolute left-10 top-10 z-20 flex flex-row items-center gap-3">
+        <AppHeaderBrand href="/dashboard" />
+      </div>
+      <div className="absolute right-10 top-10 z-20">
+        <Button asChild variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
+          <Link href="/dashboard">
+            <ArrowLeft className="h-6 w-6" />
+          </Link>
+        </Button>
+      </div>
 
             <div className="relative w-full max-w-4xl rounded-3xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl mt-16 flex flex-col">
                 <div className="text-center mb-4">

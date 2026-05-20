@@ -15,11 +15,11 @@ export function AppHeaderBrand({
   showTitle = true,
 }: AppHeaderBrandProps) {
   const content = (
-    <div className={cn("flex items-center gap-3", className)}>
-      <BrandMark size="sm" fireOpacity={0} ssOpacity={1} />
+    <div className={cn("flex flex-row items-center gap-3", className)}>
+      <BrandMark size="sm" phase="done" />
       {showTitle && (
-        <span className="font-headline text-xl font-bold text-white md:text-2xl">
-          Software Shop
+        <span className="font-headline text-2xl font-bold text-white">
+          Cryptalic
         </span>
       )}
     </div>

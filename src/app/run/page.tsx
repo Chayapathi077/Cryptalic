@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
+import { AppHeaderBrand } from "@/components/brand/AppHeaderBrand";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -195,26 +196,7 @@ export default function RunSoftwarePage() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-primary to-accent text-white">
       <header className="sticky top-0 flex h-16 items-center justify-between px-4 md:px-6 z-40">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
-        >
-          <div
-            className={cn(
-              "relative flex items-center justify-center h-10 w-10"
-            )}
-          >
-            <div
-              className={cn(
-                "relative flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-lg",
-                "h-10 w-10 p-2"
-              )}
-            >
-              <Zap className="h-5 w-5 text-white absolute -translate-x-1" />
-              <Zap className="h-5 w-5 text-white absolute translate-x-1" />
-            </div>
-          </div>
-        </Link>
+        <AppHeaderBrand href="/dashboard" />
         <Button
           asChild
           variant="ghost"

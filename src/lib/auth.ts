@@ -418,12 +418,12 @@ export async function sendRecoveryOtp(
     });
 
     await transporter.sendMail({
-      from: `"Software Shop" <${process.env.EMAIL_FROM || process.env.EMAIL_SERVER_USER}>`,
+      from: `"Cryptalic" <${process.env.EMAIL_FROM || process.env.EMAIL_SERVER_USER}>`,
       to: email,
       subject: "Your Account Recovery Code",
       html: `
         <div style="font-family: sans-serif; text-align: center; padding: 20px;">
-          <h2>Software Shop Account Recovery</h2>
+          <h2>Cryptalic Account Recovery</h2>
           <p>Your one-time recovery code is:</p>
           <p style="font-size: 24px; font-weight: bold; letter-spacing: 5px; margin: 20px 0; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">${otp}</p>
           <p>This code will expire in 10 minutes. If you did not request this, please ignore this email.</p>
@@ -683,7 +683,7 @@ async function sendViolationEmail(license: LicenseRow) {
     });
 
     await transporter.sendMail({
-      from: `"Software Shop Security" <${process.env.EMAIL_FROM || process.env.EMAIL_SERVER_USER}>`,
+      from: `"Cryptalic Security" <${process.env.EMAIL_FROM || process.env.EMAIL_SERVER_USER}>`,
       to: seller.email,
       subject: `[Security Alert] License for "${software.title}" has been blocked`,
       html: `
@@ -699,7 +699,7 @@ async function sendViolationEmail(license: LicenseRow) {
             <li><strong>Buyer's Wallet:</strong> ${license.buyer_address}</li>
           </ul>
           <p>The license is now inactive. You can review this license and choose to reactivate or permanently revoke it from your seller dashboard.</p>
-          <p>Thank you,<br/>The Software Shop Team</p>
+          <p>Thank you,<br/>The Cryptalic Team</p>
         </div>
       `,
     });

@@ -78,9 +78,6 @@
   .glass-panel {
     @apply rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-xl;
   }
-  .glass-input {
-    @apply rounded-2xl border border-white/30 bg-white/10 text-white placeholder:text-gray-300 backdrop-blur-md;
-  }
 }
 
 @layer base {
