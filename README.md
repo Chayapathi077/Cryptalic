@@ -168,4 +168,5 @@ This application is configured for easy deployment to **Firebase App Hosting**.
 
 Now you can commit this file and push your project to GitHub. It will have a great starting point for anyone who visits your repository
 
-    
+    ## 📄 License
+© 2026 Cryptalic. All rights reserved.
