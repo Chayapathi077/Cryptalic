@@ -100,43 +100,31 @@ Here's a breakdown of every major technology that powers Cryptalic, explained si
 
 ## Architecture Diagram
 
-flowchart TD
-    %% Define styling classes for aesthetic boxes
-    classDef browserBox fill:#eef2ff,stroke:#4f46e5,stroke-width:2px,color:#1e1b4b,rx:8px
-    classDef serverBox fill:#fff1f2,stroke:#e11d48,stroke-width:2px,color:#4c0519,rx:8px
-    classDef storageBox fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,rx:8px
-
-    subgraph Browser ["🌐 USER'S BROWSER"]
-        direction LR
-        React["⚛️ React UI"]:::browserBox
-        Wallet["🦊 MetaMask Wallet"]:::browserBox
-        Crypto["🔐 Web Crypto API<br/>(Encrypt / Decrypt)"]:::browserBox
-    end
-
-    subgraph Server ["⚡ NEXT.JS SERVER"]
-        direction TB
-        API["API Routes<br/>/api/signup &nbsp;|&nbsp; /api/signin &nbsp;|&nbsp; /api/upload &nbsp;|&nbsp; /api/license"]:::serverBox
-    end
-
-    subgraph Storage ["💾 DATA LAYER"]
-        direction LR
-        DB[("🗄️ Database<br/>(DB Store)")]:::storageBox
-        IPFS["📦 Pinata / IPFS<br/>(File Storage)"]:::storageBox
-    end
-
-    %% Connections
-    React --> API
-    Wallet --> API
-    Crypto --> API
-    
-    API --> DB
-    API --> IPFS
-
-    %% Apply container wrapper styles
-    style Browser fill:#ffffff,stroke:#94a3b8,stroke-width:2px,stroke-dasharray: 5 5,rx:10px
-    style Server fill:#ffffff,stroke:#94a3b8,stroke-width:2px,stroke-dasharray: 5 5,rx:10px
-    style Storage fill:none,stroke:none
-
+'''text
+┌─────────────────────────────────────────────────────┐
+│                    USER'S BROWSER                   │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │  React   │  │ MetaMask │  │  Web Crypto API  │   │
+│  │   UI     │  │  Wallet  │  │ (Encrypt/Decrypt)│   │
+│  └────┬─────┘  └────┬─────┘  └────────┬─────────┘   │
+│       │              │                 │            │
+└───────┼──────────────┼─────────────────┼────────────┘
+        │              │                 │
+        ▼              ▼                 ▼
+┌───────────────────────────────────────────────────────┐
+│              NEXT.JS SERVER (API Routes)              │
+│                                                       │
+│  /api/signup  /api/signin  /api/upload  /api/license  │
+└───────────────────┬───────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        ▼                       ▼
+┌──────────────┐      ┌─────────────────┐
+│   Database   │      │  Pinata / IPFS  │
+│  (DB Store)  │      │ (File Storage)  │
+└──────────────┘      └─────────────────┘
+'''
 ## Summary
 Cryptalic is a decentralised, encrypted software marketplace. Sellers upload encrypted software, buyers purchase licenses using cryptocurrency, and the software is only unlocked on the buyer's verified device. The entire system is designed so that no middleman ever has access to the raw software files — making it secure, private, and trustworthy.
 
