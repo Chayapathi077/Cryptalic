@@ -1,7 +1,6 @@
 # Cryptalic — Blockchain-Based Software Licensing & Anti-Piracy System
 
-<img width="2468" height="1936" alt="cryptalic1" src="https://github.com/user-attachments/assets/d475fdcd-a246-4655-aced-7ef301c4d324" />
-
+<img width="2468" height="1936" alt="cryptalic1" src="[https://github.com/user-attachments/assets/d475fdcd-a246-4655-aced-7ef301c4d324](https://github.com/user-attachments/assets/d475fdcd-a246-4655-aced-7ef301c4d324)" />
 
 ## Project Overview
 
@@ -16,8 +15,7 @@ Think of it like an app store, but instead of Apple or Google controlling everyt
 
 ### For Sellers (People Who Create Software)
 
-<img width="2468" height="1936" alt="cryptalic2" src="https://github.com/user-attachments/assets/94d102b9-7610-4738-9f82-fa894996f581" />
-
+<img width="2468" height="1936" alt="cryptalic2" src="[https://github.com/user-attachments/assets/94d102b9-7610-4738-9f82-fa894996f581](https://github.com/user-attachments/assets/94d102b9-7610-4738-9f82-fa894996f581)" />
 
 1. **Sign Up & Log In** — A seller creates an account with a username, email, and password. During signup, they're given a unique security phrase (like a secret password made of random words) that helps them recover their account if they ever forget their password.
 2. **Upload Software** — The seller uploads their software file (like a `.zip` or `.exe`). Before the file leaves their computer, it gets encrypted (scrambled into unreadable data) right inside their web browser. This means the file is already locked before it ever touches the internet.
@@ -26,21 +24,18 @@ Think of it like an app store, but instead of Apple or Google controlling everyt
 
 ### For Buyers (People Who Want to Use Software)
 
-<img width="2468" height="1936" alt="cryptalic4" src="https://github.com/user-attachments/assets/7e8c28e8-3fe2-4367-88a9-858672113dad" />
-
+<img width="2468" height="1936" alt="cryptalic4" src="[https://github.com/user-attachments/assets/7e8c28e8-3fe2-4367-88a9-858672113dad](https://github.com/user-attachments/assets/7e8c28e8-3fe2-4367-88a9-858672113dad)" />
 
 1. **Browse & Buy** — The buyer connects their MetaMask wallet (a digital crypto wallet in their browser) and browses the marketplace. When they find software they like, they purchase a license.
 2. **Download a License File** — After purchasing, the buyer gets a `.license.json` file. This tiny file contains the information needed to prove they bought the software.
 
-<img width="2468" height="1936" alt="cryptalic5" src="https://github.com/user-attachments/assets/c2d7a7e8-13f0-4e32-93a2-d90d3f4278f4" />
-
+<img width="2468" height="1936" alt="cryptalic5" src="[https://github.com/user-attachments/assets/c2d7a7e8-13f0-4e32-93a2-d90d3f4278f4](https://github.com/user-attachments/assets/c2d7a7e8-13f0-4e32-93a2-d90d3f4278f4)" />
 
 3. **Run the Software** — The buyer uploads their license file into the "Run Software" page. Cryptalic then:
    * Checks the buyer's wallet address (to make sure they're the one who paid).
    * Checks their device fingerprint (to make sure they're on the right computer, if the seller enabled this rule).
 
-<img width="2468" height="1936" alt="cryptalic6" src="https://github.com/user-attachments/assets/e1489113-0b93-414b-a9f1-5f2f00beba91" />
-
+<img width="2468" height="1936" alt="cryptalic6" src="[https://github.com/user-attachments/assets/e1489113-0b93-414b-a9f1-5f2f00beba91](https://github.com/user-attachments/assets/e1489113-0b93-414b-a9f1-5f2f00beba91)" />
 
 If everything checks out, the encrypted file is downloaded from IPFS and decrypted (unlocked) right inside the buyer's browser. The buyer can then view or download the real, usable file.
 
@@ -50,8 +45,7 @@ If everything checks out, the encrypted file is downloaded from IPFS and decrypt
 
 The actual software file is never stored unencrypted anywhere on the internet. It's encrypted on the seller's computer, stored encrypted on IPFS, and only decrypted on the buyer's computer after their identity is verified. This is called **end-to-end encryption**.
 
-<img width="2468" height="1936" alt="cryptalic3" src="https://github.com/user-attachments/assets/6012b0fa-14dc-4465-92c9-6b34d5468a24" />
-
+<img width="2468" height="1936" alt="cryptalic3" src="[https://github.com/user-attachments/assets/6012b0fa-14dc-4465-92c9-6b34d5468a24](https://github.com/user-attachments/assets/6012b0fa-14dc-4465-92c9-6b34d5468a24)" />
 
 ---
 
@@ -120,7 +114,6 @@ Here's a breakdown of every major technology that powers Cryptalic, explained si
 │   Database   │      │  Pinata / IPFS  │
 │  (DB Store)  │      │ (File Storage)  │
 └──────────────┘      └─────────────────┘
-
 Summary
 Cryptalic is a decentralised, encrypted software marketplace. Sellers upload encrypted software, buyers purchase licenses using cryptocurrency, and the software is only unlocked on the buyer's verified device. The entire system is designed so that no middleman ever has access to the raw software files — making it secure, private, and trustworthy.
 
@@ -144,33 +137,33 @@ Installation & Setup
 Clone the repository:
 
 Bash
-   git clone [https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git](https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git)
-   cd blockchain-based-software-licensing-and-piracy-prevention-system
-Install dependencies:
+git clone https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git
+cd blockchain-based-software-licensing-and-piracy-prevention-system
 
-Bash
+2. **Install dependencies:**
+   ```bash
    npm install
 Set up Environment Variables:
 Create a .env file in the root of your project and add the necessary variables for your database, Pinata, Polygon network, and Smart Contracts.
 
 Code snippet
-   # Database Configuration
-   DATABASE_URL="your_database_connection_string"
-   
-   # Pinata API Keys (for uploading files to IPFS)
-   PINATA_API_KEY="your_pinata_api_key"
-   PINATA_SECRET_API_KEY="your_pinata_secret_key"
+# Database Configuration
+DATABASE_URL="your_database_connection_string"
 
-   # Polygon Amoy Testnet RPC URL
-   NEXT_PUBLIC_AMOY_RPC_URL="your_amoy_rpc_url"
+# Pinata API Keys (for uploading files to IPFS)
+PINATA_API_KEY="your_pinata_api_key"
+PINATA_SECRET_API_KEY="your_pinata_secret_key"
 
-   # Smart Contract Details
-   NEXT_PUBLIC_SOFTWARE_LICENSE_CONTRACT_ADDRESS="your_deployed_contract_address"
-   NEXT_PUBLIC_SELLER_PRIVATE_KEY="your_wallet_private_key"
-Run the development server:
+# Polygon Amoy Testnet RPC URL
+NEXT_PUBLIC_AMOY_RPC_URL="your_amoy_rpc_url"
 
-Bash
-   npm run dev
+# Smart Contract Details
+NEXT_PUBLIC_SOFTWARE_LICENSE_CONTRACT_ADDRESS="your_deployed_contract_address"
+NEXT_PUBLIC_SELLER_PRIVATE_KEY="your_wallet_private_key"
+
+4. **Run the development server:**
+   ```bash
+npm run dev
 Open http://localhost:3000 with your browser to see the result.
 
 Smart Contract
