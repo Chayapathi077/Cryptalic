@@ -1,172 +1,195 @@
-# Blockchain-Based Software Licensing & Anti-Piracy System
+# Cryptalic — Blockchain-Based Software Licensing & Anti-Piracy System
 
-This is a full-stack web application that provides a secure, decentralized marketplace for software developers to sell licenses to their products. It leverages blockchain technology (via an NFT-based licensing scheme) and modern web development practices to create a robust system that protects against piracy while offering a seamless experience for both sellers and buyers.
+<img width="2468" height="1936" alt="cryptalic1" src="https://github.com/user-attachments/assets/d475fdcd-a246-4655-aced-7ef301c4d324" />
 
-## Key Features
 
-- **Secure User Authentication**: Users can create an account with a username, email, and password. Account recovery is secured by a 12-word security phrase, ensuring users always have control over their accounts.
-- **Seller Dashboard**: Authenticated users can upload their software, set a price in Polygon (POL), define licensing rules, and track sales and license statuses.
-- **Automated Encryption**: Software files are automatically encrypted (AES-256) on the server before being uploaded to IPFS, ensuring the raw files are never publicly exposed.
-- **Marketplace**: A public marketplace where buyers can browse, filter, and purchase software licenses.
-- **Blockchain-Powered Licensing**: When a buyer purchases software, a unique NFT license is minted on the Polygon Amoy testnet and transferred to their wallet. This NFT serves as an unforgeable proof of ownership.
-- **Buyer License Management**: Buyers have a dedicated dashboard to view all their purchased licenses, see their status, and download the necessary license file to run the software.
-- **Multi-Layered Security & Anti-Piracy**:
-  - **Wallet Lock**: The software can only be run if the user connects the wallet that owns the license NFT.
-  - **Device Fingerprinting**: The license is automatically bound to the first device it's used on, preventing users from sharing their license files with others.
-  - **On-Chain Verification**: The system performs a real-time check with the smart contract to ensure the user still owns the NFT and that the license has not been revoked.
-- **Secure Software Execution**: A dedicated "Run" page allows buyers to load their license file, which triggers a secure, automated process of fetching, decrypting, and displaying the software content entirely within the browser.
+## Project Overview
+
+**What is Cryptalic?**
+Cryptalic is a web-based software marketplace where developers can sell their software and buyers can purchase and run it — all powered by blockchain technology and end-to-end encryption.
+
+Think of it like an app store, but instead of Apple or Google controlling everything, the seller and buyer interact directly. The software files are encrypted (locked with a secret code) before they're ever uploaded, so nobody — not even Cryptalic itself — can access the raw files. Only the person who bought the license can unlock and use the software.
 
 ---
 
-## How It Works: The Core Logic
+## How Does It Work?
 
-1.  **Seller Uploads Software**:
-    - A seller uploads their software file (e.g., a `.zip` or `.exe`).
-    - The server generates a unique encryption key.
-    - The file is encrypted using this key.
-    - The **encrypted** file is uploaded to **IPFS** (via Pinata).
-    - The software details, the IPFS URL, and the decryption key are stored securely in the database.
+### For Sellers (People Who Create Software)
 
-2.  **Buyer Purchases a License**:
-    - The buyer connects their MetaMask wallet and pays the price.
-    - A request is sent to the smart contract to **mint a new NFT license**.
-    - The NFT is transferred to the buyer's wallet.
-    - A record of the purchase (linking the software, buyer, and NFT token ID) is saved in the database.
+<img width="2468" height="1936" alt="cryptalic2" src="https://github.com/user-attachments/assets/94d102b9-7610-4738-9f82-fa894996f581" />
 
-3.  **Buyer Runs the Software**:
-    - The buyer downloads a small `.license.json` file from their dashboard. This file acts as a "ticket".
-    - They upload this ticket to the "Run" page.
-    - The application reads the ticket, connects to the user's wallet, and sends a validation request to the server.
-    - The server performs all security checks:
-        - Is the license in the database marked as 'active'?
-        - Does the user's wallet own the corresponding NFT on the blockchain?
-        - Is the device ID correct?
-    - If all checks pass, the server sends back the **decryption key**.
-    - The application then fetches the **encrypted file** from IPFS, decrypts it in the browser using the key, and presents the content to the user.
 
----
+1. **Sign Up & Log In** — A seller creates an account with a username, email, and password. During signup, they're given a unique security phrase (like a secret password made of random words) that helps them recover their account if they ever forget their password.
+2. **Upload Software** — The seller uploads their software file (like a `.zip` or `.exe`). Before the file leaves their computer, it gets encrypted (scrambled into unreadable data) right inside their web browser. This means the file is already locked before it ever touches the internet.
+3. **File Goes to IPFS** — The encrypted file is then uploaded to IPFS (InterPlanetary File System) via a service called Pinata. IPFS is like a giant, shared hard drive spread across many computers around the world. It's decentralised, meaning no single company owns or controls it.
+4. **Listing on the Marketplace** — The seller sets a title, description, price (in POL cryptocurrency), category, license type, and licensing rules (like whether the buyer can only use it on one device).
 
-## Technology Stack
+### For Buyers (People Who Want to Use Software)
 
-- **Framework**: Next.js (React)
-- **Styling**: Tailwind CSS with ShadCN UI components for a modern, responsive design.
-- **Database**: [Turso](https://turso.tech) (libSQL / SQLite, serverless, no sleep on free tier)
-- **Blockchain**: Polygon (Amoy Testnet) for NFT minting.
-- **Smart Contract Language**: Solidity
-- **Blockchain Interaction**: Ethers.js
-- **File Storage**: IPFS (via Pinata) for decentralized, permanent storage of encrypted files.
-- **Encryption**: CryptoJS (AES-256) for robust client-side and server-side encryption.
-- **Authentication**: Custom solution using bcrypt for hashing passwords and security phrases.
+<img width="2468" height="1936" alt="cryptalic4" src="https://github.com/user-attachments/assets/7e8c28e8-3fe2-4367-88a9-858672113dad" />
+
+
+1. **Browse & Buy** — The buyer connects their MetaMask wallet (a digital crypto wallet in their browser) and browses the marketplace. When they find software they like, they purchase a license.
+2. **Download a License File** — After purchasing, the buyer gets a `.license.json` file. This tiny file contains the information needed to prove they bought the software.
+
+<img width="2468" height="1936" alt="cryptalic5" src="https://github.com/user-attachments/assets/c2d7a7e8-13f0-4e32-93a2-d90d3f4278f4" />
+
+
+3. **Run the Software** — The buyer uploads their license file into the "Run Software" page. Cryptalic then:
+   * Checks the buyer's wallet address (to make sure they're the one who paid).
+   * Checks their device fingerprint (to make sure they're on the right computer, if the seller enabled this rule).
+
+<img width="2468" height="1936" alt="cryptalic6" src="https://github.com/user-attachments/assets/e1489113-0b93-414b-a9f1-5f2f00beba91" />
+
+
+If everything checks out, the encrypted file is downloaded from IPFS and decrypted (unlocked) right inside the buyer's browser. The buyer can then view or download the real, usable file.
 
 ---
 
-## Getting Started
+## The Key Idea
 
+The actual software file is never stored unencrypted anywhere on the internet. It's encrypted on the seller's computer, stored encrypted on IPFS, and only decrypted on the buyer's computer after their identity is verified. This is called **end-to-end encryption**.
+
+<img width="2468" height="1936" alt="cryptalic3" src="https://github.com/user-attachments/assets/6012b0fa-14dc-4465-92c9-6b34d5468a24" />
+
+
+---
+
+## Technologies Used
+
+Here's a breakdown of every major technology that powers Cryptalic, explained simply:
+
+### Frontend (What You See)
+| Technology | What It Does |
+| :--- | :--- |
+| **Next.js 14** | The main framework that builds the entire website. It handles both the pages you see (frontend) and the behind-the-scenes logic (backend API routes) in one project. |
+| **React** | The library that makes the user interface interactive — buttons, forms, animations, and page updates all happen without reloading the page. |
+| **TypeScript** | A version of JavaScript that catches mistakes before they happen, like a spell-checker for code. |
+| **Tailwind CSS** | A styling system that lets developers design beautiful interfaces quickly using utility classes instead of writing long CSS files. |
+| **Framer Motion** | The animation library that creates the smooth intro sequence (the fire logo crossfading into the box logo, the text sliding in, etc.). |
+| **Lucide React** | A collection of beautiful, lightweight icons used throughout the app (the box logo, arrows, settings gear, etc.). |
+| **shadcn/ui** | Pre-built, beautifully designed UI components (buttons, modals, dropdowns, tables, switches) that give the app its polished, premium look. |
+
+### Backend (Behind the Scenes)
+| Technology | What It Does |
+| :--- | :--- |
+| **Next.js API Routes** | Serverless functions that handle login, signup, uploading software, managing licenses, and more — all without needing a separate server. |
+| **MongoDB** | The database that stores all user accounts, software listings, license records, and settings. It's a NoSQL database, meaning it stores data in flexible, JSON-like documents. |
+| **Pinata (IPFS)** | The service that uploads encrypted software files to IPFS (a decentralised file storage network). Files stored on IPFS can't be taken down or tampered with by any single entity. |
+
+### Blockchain & Crypto
+| Technology | What It Does |
+| :--- | :--- |
+| **MetaMask** | A browser extension that acts as a crypto wallet. Buyers connect MetaMask to verify their identity and make payments. |
+| **Ethers.js** | A JavaScript library that lets the website talk to the blockchain — connecting wallets, reading addresses, and processing transactions. |
+| **Polygon (POL)** | The blockchain network used for payments. Polygon is a "Layer 2" network built on top of Ethereum, meaning transactions are fast and cheap. |
+
+### Security & Encryption
+| Technology | What It Does |
+| :--- | :--- |
+| **Web Crypto API** | The browser's built-in encryption engine. Cryptalic uses it to encrypt files on the seller's device and decrypt them on the buyer's device — all without the data ever being exposed. |
+| **AES Encryption** | The specific encryption algorithm used. AES (Advanced Encryption Standard) is the same standard used by governments and banks worldwide. |
+| **Device Fingerprinting** | A unique ID generated for each device, ensuring a license can only be used on the buyer's specific computer (if the seller enables this rule). |
+| **Security Phrase Recovery** | Instead of traditional "forgot password" emails, users verify their identity using a secret phrase they were given during signup — adding an extra layer of security. |
+
+---
+
+## Architecture Diagram
+
+```text
+┌─────────────────────────────────────────────────────┐
+│                    USER'S BROWSER                   │
+│                                                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+│  │  React   │  │ MetaMask │  │  Web Crypto API  │   │
+│  │   UI     │  │  Wallet  │  │ (Encrypt/Decrypt)│   │
+│  └────┬─────┘  └────┬─────┘  └────────┬─────────┘   │
+│       │              │                 │            │
+└───────┼──────────────┼─────────────────┼────────────┘
+        │              │                 │
+        ▼              ▼                 ▼
+┌───────────────────────────────────────────────────────┐
+│              NEXT.JS SERVER (API Routes)              │
+│                                                       │
+│  /api/signup  /api/signin  /api/upload  /api/license  │
+└───────────────────┬───────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        ▼                       ▼
+┌──────────────┐      ┌─────────────────┐
+│   Database   │      │  Pinata / IPFS  │
+│  (DB Store)  │      │ (File Storage)  │
+└──────────────┘      └─────────────────┘
+
+Summary
+Cryptalic is a decentralised, encrypted software marketplace. Sellers upload encrypted software, buyers purchase licenses using cryptocurrency, and the software is only unlocked on the buyer's verified device. The entire system is designed so that no middleman ever has access to the raw software files — making it secure, private, and trustworthy.
+
+It's built with modern web technologies (Next.js, React, TypeScript), secured with military-grade encryption (AES via Web Crypto API), powered by blockchain payments (Polygon via MetaMask), and stores files on a decentralised network (IPFS via Pinata).
+
+Getting Started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+Prerequisites
+Node.js (v18 or later)
 
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- A [Turso](https://turso.tech) database (free tier includes 9 GB storage, no inactivity pause).
-- A [Pinata](https://www.pinata.cloud/) account to manage IPFS uploads.
-- [MetaMask](https://metamask.io/) browser extension for blockchain interactions.
+npm or yarn
 
-### Installation & Setup
+A Database setup (e.g., MongoDB/Turso) based on your backend configuration.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git
-    cd blockchain-based-software-licensing-and-piracy-prevention-system
-    ```
+A Pinata account to manage IPFS uploads.
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+MetaMask browser extension for blockchain interactions.
 
-3.  **Set up Environment Variables:**
-    Create a `.env` file in the root of your project and add the following variables.
+Installation & Setup
+Clone the repository:
 
-    ```env
-    # Turso (libSQL) — from Turso dashboard → Database → Connect
-    TURSO_DATABASE_URL="libsql://your-database-name-your-org.turso.io"
-    TURSO_AUTH_TOKEN="your_turso_auth_token"
+Bash
+   git clone [https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git](https://github.com/Chayapathi077/blockchain-based-software-licensing-and-piracy-prevention-system.git)
+   cd blockchain-based-software-licensing-and-piracy-prevention-system
+Install dependencies:
 
-    # Pinata API Keys (for uploading files to IPFS)
-    PINATA_API_KEY="your_pinata_api_key"
-    PINATA_SECRET_API_KEY="your_pinata_secret_key"
+Bash
+   npm install
+Set up Environment Variables:
+Create a .env file in the root of your project and add the necessary variables for your database, Pinata, Polygon network, and Smart Contracts.
 
-    # Polygon Amoy Testnet RPC URL (get from Alchemy or Infura)
-    NEXT_PUBLIC_AMOY_RPC_URL="your_amoy_rpc_url"
+Code snippet
+   # Database Configuration
+   DATABASE_URL="your_database_connection_string"
+   
+   # Pinata API Keys (for uploading files to IPFS)
+   PINATA_API_KEY="your_pinata_api_key"
+   PINATA_SECRET_API_KEY="your_pinata_secret_key"
 
-    # Smart Contract Details
-    NEXT_PUBLIC_SOFTWARE_LICENSE_CONTRACT_ADDRESS="your_deployed_contract_address"
-    # The private key of the account that will pay gas fees to revoke licenses (must be the contract owner)
-    NEXT_PUBLIC_SELLER_PRIVATE_KEY="your_wallet_private_key"
+   # Polygon Amoy Testnet RPC URL
+   NEXT_PUBLIC_AMOY_RPC_URL="your_amoy_rpc_url"
 
-    # Nodemailer Configuration (for sending password recovery emails)
-    # Example using Gmail, but can be any SMTP server
-    EMAIL_SERVER_HOST="smtp.gmail.com"
-    EMAIL_SERVER_PORT=465
-    EMAIL_SERVER_USER="your_email@gmail.com"
-    EMAIL_SERVER_PASSWORD="your_gmail_app_password"
-    EMAIL_FROM="your_email@gmail.com"
-    ```
+   # Smart Contract Details
+   NEXT_PUBLIC_SOFTWARE_LICENSE_CONTRACT_ADDRESS="your_deployed_contract_address"
+   NEXT_PUBLIC_SELLER_PRIVATE_KEY="your_wallet_private_key"
+Run the development server:
 
-4.  **Create your Turso database** (one-time):
-    - Sign up at [turso.tech](https://turso.tech) and create a database.
-    - Copy `TURSO_DATABASE_URL` and create an auth token for `TURSO_AUTH_TOKEN`.
-    - Tables are created automatically on first API use (`users`, `software`, `licenses`).
+Bash
+   npm run dev
+Open http://localhost:3000 with your browser to see the result.
 
-5.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+Smart Contract
+The Solidity smart contract (SoftwareLicense.sol) is a standard ERC-721 (NFT) contract with extra functions to mintLicense, revokeLicense, and set a tokenURI. You can deploy an ERC-721 template to the Polygon Amoy testnet using tools like Remix or Hardhat.
 
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deployment
+This application is optimised for deployment on Vercel (the creators of Next.js).
 
-### Smart Contract
+Push your code to GitHub (if you haven't already).
 
-The Solidity smart contract (`SoftwareLicense.sol`) is not included in this repository but is a standard ERC-721 (NFT) contract with a few extra functions:
-- A `mintLicense` function to create a new license.
-- A `revokeLicense` function that allows the contract owner to burn an NFT.
-- A `tokenURI` function to point to the license metadata on IPFS.
+Go to Vercel.com and log in.
 
-You can use a standard ERC-721 template from OpenZeppelin and deploy it to the Polygon Amoy testnet using tools like Remix or Hardhat. After deployment, place the new contract address in your `.env` file.
+Click Add New... > Project.
 
----
+Import your GitHub repository.
 
-## Deployment
+In the Environment Variables section, copy and paste all the variables from your local .env file.
 
-This application is configured for easy deployment to **Firebase App Hosting**.
+Click Deploy. Vercel will automatically build and deploy your application.
 
-1.  **Install Firebase CLI:**
-    ```bash
-    npm install -g firebase-tools
-    ```
-
-2.  **Login to Firebase:**
-    ```bash
-    firebase login
-    ```
-
-3.  **Initialize Firebase in your project:**
-    ```bash
-    firebase init hosting
-    ```
-    - Select an existing Firebase project or create a new one.
-    - When prompted for the public directory, enter `.next`.
-    - Configure as a single-page app (rewrite all URLs to /index.html)? **No**.
-    - Set up automatic builds and deploys with GitHub? **(Optional)**
-
-4.  **Deploy:**
-    ```bash
-    firebase deploy --only hosting
-    ```
-    Firebase will build and deploy your Next.js application.
-
-Now you can commit this file and push your project to GitHub. It will have a great starting point for anyone who visits your repository
-
-## 📄 License
+📄 License
 © 2026 Cryptalic. All rights reserved.
