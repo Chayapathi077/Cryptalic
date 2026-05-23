@@ -1,16 +1,22 @@
-# **App Name**: Lightning Launch
+# 🏗️ BLUEPRINT: Cryptalic
 
-## Core Features:
+## 📌 Project Identity
+**Type:** Web3 / Cybersecurity Marketplace  
+**Core Mechanism:** End-to-end client-side encryption paired with NFT-based software licensing.
 
-- Image Transition: Display a central image (lightning bolts) that transitions to the top-left corner after 1.7 seconds.
-- Glassmorphic Container: Overlay a glassmorphic container in the center of the screen when the image starts to transition.
+## 🧱 Tech Stack Architecture
+* **Frontend:** Next.js 14, React, TypeScript, Tailwind CSS, shadcn/ui
+* **Backend:** Next.js API Routes (Serverless), MongoDB
+* **Web3 & Crypto:** Ethers.js, MetaMask, Polygon (POL), Solidity (ERC-721)
+* **Storage:** Pinata / IPFS (Decentralised Storage)
+* **Security:** Web Crypto API (AES Encryption), Device Fingerprinting
 
-## Style Guidelines:
+## 🔄 Core System Flow
+1. **Upload:** File selected ➔ Encrypted via Web Crypto API (Browser) ➔ Scrambled BLOB sent to IPFS via Pinata.
+2. **Purchase:** Buyer connects MetaMask ➔ Pays in POL ➔ Smart contract mints `.license.json` token.
+3. **Execution:** Buyer uploads license ➔ App verifies wallet address & device ID ➔ Fetches from IPFS ➔ Decrypts locally in browser ➔ Prompts native download.
 
-- Primary color: Violet (#9400D3) for a modern, tech-forward aesthetic. Inspired by the color violet, representing imagination and originality.
-- Background color: Very light pink (#F8E8FF), derived from the primary color's hue but highly desaturated and light to provide a gentle backdrop.
-- Accent color: Rose (#FF007F), analogous to violet but with greater saturation and brightness to highlight elements. Gradient from primary color violet to the accent color Rose will serve as the background
-- Font: 'Inter' (sans-serif) for all text elements to maintain a clean, modern interface.
-- The main image (lightning bolts) will be initially centered on the screen.
-- A CSS transition will move the image to the top-left corner smoothly.
-- The glassmorphic container will appear simultaneously with the image's movement to the top-left, creating a coordinated effect.
+## 🗄️ Primary Data Entities
+* **User:** `_id`, `walletAddress`, `securityPhraseHash`
+* **Software:** `_id`, `sellerId`, `ipfsHash`, `price`, `encryptionKeyHash`
+* **License:** `tokenId`, `buyerAddress`, `softwareId`, `deviceFingerprint`
