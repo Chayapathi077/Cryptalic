@@ -29,9 +29,8 @@ export default function ProfilePage() {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
  useEffect(() => {
-    // CodeQL Fix: Removed sessionStorage.getItem. 
-    // Temporarily hardcoding for UI testing until Context API is implemented.
-    const storedUsername = "CurrentUser"; // TODO: Fetch from secure Context
+    // Read the safe identifier we just set during login
+    const storedUsername = sessionStorage.getItem('username'); 
     
     if (storedUsername) {
       setUsername(storedUsername);
