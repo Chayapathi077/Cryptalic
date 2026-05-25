@@ -132,12 +132,6 @@ Cryptalic is a decentralised, encrypted software marketplace. Sellers upload enc
 It's built with modern web technologies (Next.js, React, TypeScript), secured with military-grade encryption (AES via Web Crypto API), powered by blockchain payments (Polygon via MetaMask), and stores files on a decentralised network (IPFS via Pinata).
 
 ---
-## Summary
-Cryptalic is a decentralised, encrypted software marketplace. Sellers upload encrypted software, buyers purchase licenses using cryptocurrency, and the software is only unlocked on the buyer's verified device. The entire system is designed so that no middleman ever has access to the raw software files — making it secure, private, and trustworthy.
-
-It's built with modern web technologies (Next.js, React, TypeScript), secured with military-grade encryption (AES via Web Crypto API), powered by blockchain payments (Polygon via MetaMask), and stores files on a decentralised network (IPFS via Pinata).
-
----
 
 ## Getting Started
 
