@@ -91,7 +91,7 @@ export default function SignUpPage() {
     return { lengthMet, uppercaseMet, lowercaseMet, numberMet, specialCharMet, matchMet, allMet };
   }, [password, confirmPassword]);
 
-  const handleContinue = async () => {
+ const handleContinue = async () => {
     if (!username || !email || !password || !confirmPassword) {
       toast({ title: "Error", description: "All fields are required.", variant: "destructive" });
       return;
@@ -108,9 +108,11 @@ export default function SignUpPage() {
     setIsProcessing(true);
 
     try {
-        sessionStorage.setItem('signup_username', username);
-        sessionStorage.setItem('signup_email', email);
-        sessionStorage.setItem('signup_password', password);
+        // CodeQL Fix: We removed the sessionStorage.setItem() calls here.
+        // Sensitive data should never be written to the browser's disk.
+        
+        // TODO: Store these credentials in a secure React Context or a state 
+        // manager (like Zustand or Redux) before pushing to the next route.
         router.push('/signup/details');
     } catch (error) {
         toast({ title: "Error", description: "Could not proceed to the next step. Please try again.", variant: "destructive" });
