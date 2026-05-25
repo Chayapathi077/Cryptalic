@@ -59,8 +59,12 @@ export default function Home() {
         description: `Welcome back, ${result.user.username}!`,
       });
       
-      // CodeQL Fix: We removed all sessionStorage.setItem calls here.
-      // TODO: Set user session via secure HTTP-only cookies or React Context.
+      // RESTORE MEMORY: Save non-sensitive data so the dashboard knows who you are!
+      sessionStorage.setItem("username", result.user.username);
+      
+      if (result.user.profileIcon) {
+        sessionStorage.setItem("profileIcon", result.user.profileIcon);
+      }
       
       router.push("/dashboard");
     } else {
